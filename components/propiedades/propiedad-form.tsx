@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useState, useRef, useCallback } from "react"
+import Image from "next/image"
 import { useCRM } from "@/lib/crm-context"
 import { Button } from "@/components/ui/button"
 import { X, Upload, Trash2 } from "lucide-react"
@@ -26,7 +27,18 @@ export function PropiedadForm({
   const { addPropiedad, updatePropiedad, retasarPropiedad, propiedades } = useCRM()
   const isEdit = Boolean(propiedad)
 
-  const [codigo, setCodigo] = useState(propiedad?.codigo ?? "")
+  const nextCode = React.useMemo(() => {
+    const nums = propiedades
+      .map((item) => {
+        const match = item.codigo.match(/DEMO-(\d+)/)
+        return match ? Number.parseInt(match[1], 10) : 0
+      })
+      .filter(Boolean)
+    const max = nums.length > 0 ? Math.max(...nums) : 0
+    return `DEMO-${String(max + 1).padStart(3, "0")}`
+  }, [propiedades])
+
+  const [codigo, setCodigo] = useState(propiedad?.codigo ?? nextCode)
   const [tipo, setTipo] = useState<TipoPropiedad>(propiedad?.tipo ?? "Departamento")
   const [direccion, setDireccion] = useState(propiedad?.direccion ?? "")
   const [zona, setZona] = useState(propiedad?.zona ?? "")
@@ -36,26 +48,11 @@ export function PropiedadForm({
   const [estado, setEstado] = useState<EstadoPropiedad>(propiedad?.estado ?? "Disponible")
   const [descripcion, setDescripcion] = useState(propiedad?.descripcion ?? "")
   const [imagenes, setImagenes] = useState<string[]>(propiedad?.imagenes ?? [])
+  const [imageError, setImageError] = useState("")
   const [dragActive, setDragActive] = useState(false)
   const [retasarPrecio, setRetasarPrecio] = useState("")
   const fileInputRef = useRef<HTMLInputElement>(null)
   const originalPrecioRef = useRef<number | null>(propiedad?.precio ?? null)
-
-  // Auto-generate next code suggestion
-  const nextCode = React.useMemo(() => {
-    const nums = propiedades
-      .map((p) => {
-        const match = p.codigo.match(/FRO-(\d+)/)
-        return match ? Number.parseInt(match[1], 10) : 0
-      })
-      .filter(Boolean)
-    const max = nums.length > 0 ? Math.max(...nums) : 0
-    return `FRO-${String(max + 1).padStart(3, "0")}`
-  }, [propiedades])
-
-  React.useEffect(() => {
-    if (!isEdit && !codigo) setCodigo(nextCode)
-  }, [nextCode, codigo, isEdit])
 
   React.useEffect(() => {
     if (!propiedad) return
@@ -63,8 +60,17 @@ export function PropiedadForm({
   }, [propiedad])
 
   const processFiles = useCallback((files: FileList | File[]) => {
-    const fileArray = Array.from(files).filter((f) =>
-      f.type.startsWith("image/")
+    const allowedTypes = new Set(["image/jpeg", "image/png", "image/webp"])
+    const availableSlots = Math.max(0, 5 - imagenes.length)
+    const candidates = Array.from(files)
+    const fileArray = candidates
+      .filter((file) => allowedTypes.has(file.type) && file.size <= 5 * 1024 * 1024)
+      .slice(0, availableSlots)
+
+    setImageError(
+      fileArray.length === candidates.length
+        ? ""
+        : "Podés adjuntar hasta 5 imágenes JPG, PNG o WebP de 5 MB cada una.",
     )
     if (fileArray.length === 0) return
 
@@ -78,7 +84,7 @@ export function PropiedadForm({
       }
       reader.readAsDataURL(file)
     })
-  }, [])
+  }, [imagenes.length])
 
   function handleDrag(e: React.DragEvent) {
     e.preventDefault()
@@ -198,7 +204,7 @@ export function PropiedadForm({
                 type="text"
                 value={codigo}
                 onChange={(e) => setCodigo(e.target.value)}
-                placeholder="Ej: FRO-026"
+                placeholder="Ej: DEMO-026"
                 className={inputClass}
                 required
               />
@@ -385,12 +391,14 @@ export function PropiedadForm({
             <input
               ref={fileInputRef}
               type="file"
-              accept="image/*"
+              accept="image/jpeg,image/png,image/webp"
               multiple
               onChange={handleFileChange}
               className="hidden"
             />
           </div>
+
+          {imageError && <p className="text-xs text-destructive">{imageError}</p>}
 
           {/* Image preview grid */}
           {imagenes.length > 0 && (
@@ -400,9 +408,12 @@ export function PropiedadForm({
                   key={index}
                   className="group relative overflow-hidden rounded-lg border border-border"
                 >
-                  <img
+                  <Image
                     src={img || "/placeholder.svg"}
                     alt={`Vista previa ${index + 1}`}
+                    width={400}
+                    height={300}
+                    unoptimized
                     className="aspect-[4/3] w-full object-cover"
                   />
                   <button
