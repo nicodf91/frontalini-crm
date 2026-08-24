@@ -83,12 +83,13 @@ export interface Evento {
   notas: string
 }
 
+// Registros sinteticos para la demostracion. No representan personas ni operaciones reales.
 export const initialLeads: Lead[] = [
   {
     id: "l1",
     tipoContacto: "Comprador",
-    nombre: "María González",
-    telefono: "+54 11 5555 1234",
+    nombre: "Lead Demo 01",
+    telefono: "+54 11 0000 0001",
     canal: "WhatsApp",
     tipoBuscado: "Departamento",
     zona: "Centro",
@@ -99,8 +100,8 @@ export const initialLeads: Lead[] = [
   {
     id: "l2",
     tipoContacto: "Comprador",
-    nombre: "Carlos Rodríguez",
-    telefono: "+54 11 5555 5678",
+    nombre: "Lead Demo 02",
+    telefono: "+54 11 0000 0002",
     canal: "Mercado Libre",
     tipoBuscado: "Casa",
     zona: "Zona Norte",
@@ -111,8 +112,8 @@ export const initialLeads: Lead[] = [
   {
     id: "l3",
     tipoContacto: "Comprador",
-    nombre: "Ana Martínez",
-    telefono: "+54 11 5555 9012",
+    nombre: "Lead Demo 03",
+    telefono: "+54 11 0000 0003",
     canal: "Instagram",
     tipoBuscado: "Lote",
     zona: "Barrio cerrado",
@@ -123,8 +124,8 @@ export const initialLeads: Lead[] = [
   {
     id: "l4",
     tipoContacto: "Propietario",
-    nombre: "Roberto Fernández",
-    telefono: "+54 11 5555 3456",
+    nombre: "Lead Demo 04",
+    telefono: "+54 11 0000 0004",
     canal: "Facebook",
     tipoOfrece: "Casa Quinta",
     zona: "Zona Sur",
@@ -135,8 +136,8 @@ export const initialLeads: Lead[] = [
   {
     id: "l5",
     tipoContacto: "Propietario",
-    nombre: "Lucía Romero",
-    telefono: "+54 11 5555 7890",
+    nombre: "Lead Demo 05",
+    telefono: "+54 11 0000 0005",
     canal: "WhatsApp",
     tipoOfrece: "Departamento",
     zona: "Centro",
@@ -149,7 +150,7 @@ export const initialLeads: Lead[] = [
 export const initialPropiedades: Propiedad[] = [
   {
     id: "p1",
-    codigo: "FRO-018",
+    codigo: "DEMO-001",
     tipo: "Departamento",
     zona: "Centro",
     precio: 85000,
@@ -161,7 +162,7 @@ export const initialPropiedades: Propiedad[] = [
   },
   {
     id: "p2",
-    codigo: "FRO-021",
+    codigo: "DEMO-002",
     tipo: "Casa",
     zona: "Zona Norte",
     precio: 175000,
@@ -170,7 +171,7 @@ export const initialPropiedades: Propiedad[] = [
   },
   {
     id: "p3",
-    codigo: "FRO-025",
+    codigo: "DEMO-003",
     tipo: "Lote",
     zona: "Barrio cerrado",
     precio: 42000,
@@ -183,7 +184,7 @@ export const initialDemandas: DemandaActiva[] = [
   {
     id: "d1",
     clienteId: "l1",
-    clienteNombre: "María González",
+    clienteNombre: "Lead Demo 01",
     tipo: "Departamento",
     zona: "Centro",
     presupuesto: "USD 50.000 – 100.000",
@@ -193,7 +194,7 @@ export const initialDemandas: DemandaActiva[] = [
   {
     id: "d2",
     clienteId: "l2",
-    clienteNombre: "Carlos Rodríguez",
+    clienteNombre: "Lead Demo 02",
     tipo: "Casa",
     zona: "Zona Norte",
     presupuesto: "USD 100.000 – 200.000",
@@ -207,10 +208,10 @@ export const initialAlertas: Alerta[] = [
     id: "a1",
     tipo: "retasacion",
     leadId: "l1",
-    leadNombre: "María González",
+    leadNombre: "Lead Demo 01",
     propiedadId: "p1",
-    propiedadCodigo: "FRO-018",
-    mensaje: "La propiedad FRO-018 fue retasada de USD 95.000 a USD 85.000. Podría interesarle a María González.",
+    propiedadCodigo: "DEMO-001",
+    mensaje: "La propiedad DEMO-001 fue retasada de USD 95.000 a USD 85.000. Podría interesarle al Lead Demo 01.",
     resuelta: false,
     fecha: "2025-12-15",
   },
@@ -218,10 +219,10 @@ export const initialAlertas: Alerta[] = [
     id: "a2",
     tipo: "match",
     leadId: "l1",
-    leadNombre: "María González",
+    leadNombre: "Lead Demo 01",
     propiedadId: "p1",
-    propiedadCodigo: "FRO-018",
-    mensaje: "La propiedad FRO-018 (Departamento en Centro, USD 85.000) coincide con la búsqueda de María González.",
+    propiedadCodigo: "DEMO-001",
+    mensaje: "La propiedad DEMO-001 (Departamento en Centro, USD 85.000) coincide con la búsqueda del Lead Demo 01.",
     resuelta: false,
     fecha: "2025-12-10",
   },
@@ -230,24 +231,24 @@ export const initialAlertas: Alerta[] = [
 export const initialEventos: Evento[] = [
   {
     id: "e1",
-    titulo: "Llamar a María González",
+    titulo: "Llamar al Lead Demo 01",
     tipo: "Llamada",
     fecha: new Date().toISOString().split("T")[0],
     hora: "10:00",
     duracion: "30 min",
     leadId: "l1",
-    leadNombre: "María González",
+    leadNombre: "Lead Demo 01",
     notas: "Consultar disponibilidad para visita",
   },
   {
     id: "e2",
-    titulo: "Visita FRO-021 con Carlos",
+    titulo: "Visita DEMO-002 con Lead Demo 02",
     tipo: "Visita",
     fecha: new Date().toISOString().split("T")[0],
     hora: "16:00",
     duracion: "1 hora",
     leadId: "l2",
-    leadNombre: "Carlos Rodríguez",
+    leadNombre: "Lead Demo 02",
     notas: "Segunda visita al inmueble",
   },
 ]

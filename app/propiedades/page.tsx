@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Image from "next/image"
 import { useCRM } from "@/lib/crm-context"
 import { Button } from "@/components/ui/button"
 import { Building2, RefreshCw, Plus, MapPin, Maximize2, Grid3X3, Pencil } from "lucide-react"
@@ -77,9 +78,12 @@ export default function PropiedadesPage() {
             {/* Image section */}
             {prop.imagenes && prop.imagenes.length > 0 ? (
               <div className="relative">
-                <img
+                <Image
                   src={prop.imagenes[0] || "/placeholder.svg"}
                   alt={`Propiedad ${prop.codigo}`}
+                  width={800}
+                  height={500}
+                  unoptimized
                   className="aspect-[16/10] w-full object-cover"
                 />
                 {prop.imagenes.length > 1 && (

@@ -4,7 +4,7 @@ import React, { createContext, useContext, useState, useCallback, useRef } from 
 import { toast } from "sonner"
 import type {
   Lead, Propiedad, DemandaActiva, Alerta, Evento,
-  LeadEstado, Canal, Presupuesto, TipoPropiedad, TipoEvento,
+  LeadEstado,
 } from "./store"
 import {
   initialLeads, initialPropiedades, initialDemandas,
@@ -262,25 +262,22 @@ export function CRMProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   const updateEvento = useCallback((id: string, updates: Partial<Evento>) => {
-    let updated: Evento | null = null
-    setEventos((prev) =>
-      prev.map((e) => {
-        if (e.id !== id) return e
-        updated = { ...e, ...updates }
-        return updated
-      })
-    )
+    const current = eventos.find((evento) => evento.id === id)
+    if (!current) return
 
-    if (updated?.leadId) {
+    const updated: Evento = { ...current, ...updates }
+    setEventos((prev) => prev.map((evento) => (evento.id === id ? updated : evento)))
+
+    if (updated.leadId) {
       setLeads((prev) =>
         prev.map((l) =>
-          l.id === updated!.leadId
-            ? { ...l, proximoPaso: `${updated!.tipo} - ${updated!.fecha} ${updated!.hora}` }
+          l.id === updated.leadId
+            ? { ...l, proximoPaso: `${updated.tipo} - ${updated.fecha} ${updated.hora}` }
             : l
         )
       )
     }
-  }, [])
+  }, [eventos])
 
   const removeEvento = useCallback((id: string) => {
     setEventos((prev) => prev.filter((e) => e.id !== id))

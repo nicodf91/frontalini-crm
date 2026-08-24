@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { useCRM } from "@/lib/crm-context"
 import { LeadTable } from "@/components/leads/lead-table"
 import { LeadForm } from "@/components/leads/lead-form"
 import { Button } from "@/components/ui/button"

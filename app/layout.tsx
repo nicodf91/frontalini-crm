@@ -7,8 +7,8 @@ import { AppHeader } from "@/components/app-header"
 import { Toaster } from "sonner"
 
 export const metadata: Metadata = {
-  title: "Frontalini – Sistema Comercial Inmobiliario",
-  description: "CRM para gestión comercial de venta de propiedades",
+  title: "Frontalini – Demo de CRM inmobiliario",
+  description: "Prototipo de CRM inmobiliario con datos ficticios y estado en memoria",
 }
 
 export const viewport: Viewport = {
@@ -28,6 +28,13 @@ export default function RootLayout({
             <AppSidebar />
             <div className="flex flex-1 flex-col pl-60">
               <AppHeader />
+              <div
+                role="status"
+                className="border-b border-amber-200 bg-amber-50 px-6 py-2 text-sm text-amber-900"
+              >
+                Demo de portfolio: todos los datos son ficticios y los cambios se
+                reinician al recargar la página.
+              </div>
               <main className="flex-1 p-6">{children}</main>
             </div>
           </div>
